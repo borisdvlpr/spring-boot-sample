@@ -23,6 +23,10 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
