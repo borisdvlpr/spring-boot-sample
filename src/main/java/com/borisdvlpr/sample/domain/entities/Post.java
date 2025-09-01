@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,15 +33,23 @@ public class Post {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private PostStatus status;
+    private int readingTime;
 
     @Column(nullable = false)
-    private int readingTime;
+    @Enumerated(EnumType.STRING)
+    private PostStatus status;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
