@@ -2,6 +2,7 @@ package com.borisdvlpr.sample.mapper;
 
 import com.borisdvlpr.sample.domain.PostStatus;
 import com.borisdvlpr.sample.domain.dto.CategoryDTO;
+import com.borisdvlpr.sample.domain.dto.CreateCategoryRequest;
 import com.borisdvlpr.sample.domain.entities.Category;
 import com.borisdvlpr.sample.domain.entities.Post;
 import org.mapstruct.Mapper;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface CategoryMapper {
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "calculatePostCount")
     CategoryDTO toDTO(Category category);
+
+    Category toEntity(CreateCategoryRequest createCategoryRequest);
 
     @Named("calculatePostCount")
     default long calculatePostCount(List<Post> posts) {
