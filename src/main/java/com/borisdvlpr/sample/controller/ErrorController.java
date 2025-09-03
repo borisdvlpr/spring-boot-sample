@@ -23,7 +23,7 @@ public class ErrorController {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(IllegalAccessError.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(Exception e) {
         log.error("Caught exception: ", e);
         ApiErrorResponse error = ApiErrorResponse.builder()
