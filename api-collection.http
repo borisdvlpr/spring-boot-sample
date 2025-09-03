@@ -9,4 +9,3 @@ Content-Type: application/json
 
 ### DELETE a category
 DELETE http://localhost:8080/api/v1/categories/7361883d-90bf-479e-bef9-5911189d240d
-
