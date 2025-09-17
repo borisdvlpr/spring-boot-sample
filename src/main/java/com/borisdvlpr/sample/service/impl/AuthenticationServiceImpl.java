@@ -1,6 +1,7 @@
 package com.borisdvlpr.sample.service.impl;
 
 import com.borisdvlpr.sample.service.AuthenticationService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -48,8 +49,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return "";
     }
 
+    @Override
+    public UserDetails validateToken(String token) {
+        String username = extractUserName(token);
+        return userDetailsService.loadUserByUsername(username);
+    }
+
     public Key getSigningKey() {
         byte[] keyBytes = secretKey.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private String extractUserName(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getBody();
+
+        return claims.getSubject();
     }
 }
