@@ -1,5 +1,6 @@
 package com.borisdvlpr.sample.config;
 
+import com.borisdvlpr.sample.domain.entities.User;
 import com.borisdvlpr.sample.repository.UserRepository;
 import com.borisdvlpr.sample.security.BlogUserDetailsService;
 import com.borisdvlpr.sample.security.JwtAuthenticationFilter;
@@ -27,7 +28,20 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return new BlogUserDetailsService(userRepository);
+        BlogUserDetailsService blogUserDetailsService = new BlogUserDetailsService(userRepository);
+
+        String email = "user@test.com";
+        userRepository.findByEmail(email).orElseGet(() -> {
+            User newUser = User.builder()
+                    .name("TestUser")
+                    .email(email)
+                    .password(passwordEncoder().encode("password"))
+                    .build();
+
+            return userRepository.save(newUser);
+        });
+
+        return blogUserDetailsService;
     }
 
     @Bean
