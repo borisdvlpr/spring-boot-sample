@@ -24,7 +24,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private List<Post> posts = new ArrayList<>();
+    private Set<Post> posts = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
