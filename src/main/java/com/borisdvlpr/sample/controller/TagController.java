@@ -1,14 +1,14 @@
 package com.borisdvlpr.sample.controller;
 
+import com.borisdvlpr.sample.domain.dto.CreateTagsRequest;
 import com.borisdvlpr.sample.domain.dto.TagResponse;
 import com.borisdvlpr.sample.domain.entities.Tag;
 import com.borisdvlpr.sample.mapper.TagMapper;
 import com.borisdvlpr.sample.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,16 @@ public class TagController {
         List<TagResponse> tagResponses = tags.stream().map(tagMapper::toTagResponse).toList();
 
         return ResponseEntity.ok(tagResponses);
+    }
+
+    @PostMapping
+    public ResponseEntity<List<TagResponse>> createTags(@RequestBody CreateTagsRequest createTagsRequest) {
+        List<Tag> savedTags = tagService.createTags(createTagsRequest.getNames());
+        List<TagResponse> createdTagResponses = savedTags.stream().map(tagMapper::toTagResponse).toList();
+
+        return new ResponseEntity<>(
+                createdTagResponses,
+                HttpStatus.CREATED
+        );
     }
 }
