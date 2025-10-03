@@ -1,7 +1,7 @@
 package com.borisdvlpr.sample.controller;
 
 import com.borisdvlpr.sample.domain.dto.CreateTagsRequest;
-import com.borisdvlpr.sample.domain.dto.TagResponse;
+import com.borisdvlpr.sample.domain.dto.TagDTO;
 import com.borisdvlpr.sample.domain.entities.Tag;
 import com.borisdvlpr.sample.mapper.TagMapper;
 import com.borisdvlpr.sample.service.TagService;
@@ -21,20 +21,20 @@ public class TagController {
     private final TagMapper tagMapper;
 
     @GetMapping
-    public ResponseEntity<List<TagResponse>> getAllTags() {
+    public ResponseEntity<List<TagDTO>> getAllTags() {
         List<Tag> tags = tagService.getTags();
-        List<TagResponse> tagResponses = tags.stream().map(tagMapper::toTagResponse).toList();
+        List<TagDTO> tagRespons = tags.stream().map(tagMapper::toTagResponse).toList();
 
-        return ResponseEntity.ok(tagResponses);
+        return ResponseEntity.ok(tagRespons);
     }
 
     @PostMapping
-    public ResponseEntity<List<TagResponse>> createTags(@RequestBody CreateTagsRequest createTagsRequest) {
+    public ResponseEntity<List<TagDTO>> createTags(@RequestBody CreateTagsRequest createTagsRequest) {
         List<Tag> savedTags = tagService.createTags(createTagsRequest.getNames());
-        List<TagResponse> createdTagResponses = savedTags.stream().map(tagMapper::toTagResponse).toList();
+        List<TagDTO> createdTagRespons = savedTags.stream().map(tagMapper::toTagResponse).toList();
 
         return new ResponseEntity<>(
-                createdTagResponses,
+                createdTagRespons,
                 HttpStatus.CREATED
         );
     }

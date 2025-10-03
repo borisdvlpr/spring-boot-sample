@@ -1,7 +1,7 @@
 package com.borisdvlpr.sample.mapper;
 
 import com.borisdvlpr.sample.domain.PostStatus;
-import com.borisdvlpr.sample.domain.dto.TagResponse;
+import com.borisdvlpr.sample.domain.dto.TagDTO;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.Tag;
 import org.mapstruct.Mapper;
@@ -14,7 +14,7 @@ import java.util.Set;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface TagMapper {
     @Mapping(target = "postCount", source = "posts", qualifiedByName = "calculatePostCounts")
-    TagResponse toTagResponse(Tag tag);
+    TagDTO toTagResponse(Tag tag);
 
     @Named("calculatePostCounts")
     default Integer calculatePostCounts(Set<Post> posts) {
