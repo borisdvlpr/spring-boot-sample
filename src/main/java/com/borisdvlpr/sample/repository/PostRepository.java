@@ -4,6 +4,7 @@ import com.borisdvlpr.sample.domain.PostStatus;
 import com.borisdvlpr.sample.domain.entities.Category;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.Tag;
+import com.borisdvlpr.sample.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
     List<Post> findAllByStatusAndTagsContaining(PostStatus status, Tag tag);
 
     List<Post> findAllByStatus(PostStatus status);
+
+    List<Post> findAllByAuthorAndStatus(User author, PostStatus status);
 }
