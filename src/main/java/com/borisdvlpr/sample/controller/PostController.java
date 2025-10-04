@@ -1,5 +1,7 @@
 package com.borisdvlpr.sample.controller;
 
+import com.borisdvlpr.sample.domain.CreatePostRequest;
+import com.borisdvlpr.sample.domain.dto.CreatePostRequestDTO;
 import com.borisdvlpr.sample.domain.dto.PostDTO;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.User;
@@ -7,6 +9,7 @@ import com.borisdvlpr.sample.mapper.PostMapper;
 import com.borisdvlpr.sample.service.PostService;
 import com.borisdvlpr.sample.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,5 +42,18 @@ public class PostController {
         List<PostDTO> postDtos = draftPosts.stream().map(postMapper::toDto).toList();
 
         return ResponseEntity.ok(postDtos);
+    }
+
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(
+            @RequestBody CreatePostRequestDTO createPostRequestDTO,
+            @RequestAttribute UUID userId
+    ) {
+        User loggedInUser = userService.getUserById(userId);
+        CreatePostRequest createPostRequest = postMapper.toCreatePostRequest(createPostRequestDTO);
+        Post createdPost = postService.createPost(loggedInUser, createPostRequest);
+        PostDTO createdPostDTO = postMapper.toDto(createdPost);
+
+        return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
     }
 }
