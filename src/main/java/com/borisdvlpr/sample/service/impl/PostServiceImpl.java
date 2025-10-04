@@ -4,6 +4,7 @@ import com.borisdvlpr.sample.domain.PostStatus;
 import com.borisdvlpr.sample.domain.entities.Category;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.Tag;
+import com.borisdvlpr.sample.domain.entities.User;
 import com.borisdvlpr.sample.repository.PostRepository;
 import com.borisdvlpr.sample.service.CategoryService;
 import com.borisdvlpr.sample.service.PostService;
@@ -43,5 +44,10 @@ public class PostServiceImpl implements PostService {
         }
 
         return postRepository.findAllByStatus(PostStatus.PUBLISHED);
+    }
+
+    @Override
+    public List<Post> getDraftPosts(User user) {
+        return postRepository.findAllByAuthorAndStatus(user, PostStatus.DRAFT);
     }
 }
