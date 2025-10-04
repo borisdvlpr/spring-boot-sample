@@ -38,33 +38,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        Jwts.builder()
+        return Jwts.builder()
                 .claims(claims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiryMs))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
-
-        return "";
     }
 
     @Override
     public UserDetails validateToken(String token) {
-        String username = extractUserName(token);
+        String username = extractUsername(token);
         return userDetailsService.loadUserByUsername(username);
     }
 
-    public Key getSigningKey() {
+    private Key getSigningKey() {
         byte[] keyBytes = secretKey.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private String extractUserName(String token) {
+    private String extractUsername(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()
-                .parseSignedClaims(token)
+                .parseClaimsJws(token)
                 .getBody();
 
         return claims.getSubject();
