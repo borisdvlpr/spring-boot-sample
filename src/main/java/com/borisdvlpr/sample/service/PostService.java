@@ -1,6 +1,7 @@
 package com.borisdvlpr.sample.service;
 
 
+import com.borisdvlpr.sample.domain.CreatePostRequest;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.User;
 
@@ -11,4 +12,6 @@ public interface PostService {
     List<Post> getAllPosts(UUID categoryId, UUID tagId);
 
     List<Post> getDraftPosts(User user);
+
+    Post createPost(User user, CreatePostRequest createPostRequest);
 }
