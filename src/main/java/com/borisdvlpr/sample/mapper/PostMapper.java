@@ -1,8 +1,10 @@
 package com.borisdvlpr.sample.mapper;
 
 import com.borisdvlpr.sample.domain.CreatePostRequest;
+import com.borisdvlpr.sample.domain.UpdatePostRequest;
 import com.borisdvlpr.sample.domain.dto.CreatePostRequestDTO;
 import com.borisdvlpr.sample.domain.dto.PostDTO;
+import com.borisdvlpr.sample.domain.dto.UpdatePostRequestDTO;
 import com.borisdvlpr.sample.domain.entities.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,4 +18,6 @@ public interface PostMapper {
     PostDTO toDto(Post post);
 
     CreatePostRequest toCreatePostRequest(CreatePostRequestDTO dto);
+
+    UpdatePostRequest toUpdatePostRequest(UpdatePostRequestDTO dto);
 }
