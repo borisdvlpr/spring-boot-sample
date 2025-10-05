@@ -1,13 +1,16 @@
 package com.borisdvlpr.sample.controller;
 
 import com.borisdvlpr.sample.domain.CreatePostRequest;
+import com.borisdvlpr.sample.domain.UpdatePostRequest;
 import com.borisdvlpr.sample.domain.dto.CreatePostRequestDTO;
 import com.borisdvlpr.sample.domain.dto.PostDTO;
+import com.borisdvlpr.sample.domain.dto.UpdatePostRequestDTO;
 import com.borisdvlpr.sample.domain.entities.Post;
 import com.borisdvlpr.sample.domain.entities.User;
 import com.borisdvlpr.sample.mapper.PostMapper;
 import com.borisdvlpr.sample.service.PostService;
 import com.borisdvlpr.sample.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +58,17 @@ public class PostController {
         PostDTO createdPostDTO = postMapper.toDto(createdPost);
 
         return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<PostDTO> updatePost(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdatePostRequestDTO updatePostRequestDTO
+    ) {
+        UpdatePostRequest updatePostRequest = postMapper.toUpdatePostRequest(updatePostRequestDTO);
+        Post updatedPost = postService.updatePost(id, updatePostRequest);
+        PostDTO updatedPostDto = postMapper.toDto(updatedPost);
+
+        return ResponseEntity.ok(updatedPostDto);
     }
 }
